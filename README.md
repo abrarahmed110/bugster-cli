@@ -1,7 +1,6 @@
 # Bugster CLI
 
-![release version](https://img.shields.io/github/v/release/Bugsterapp/bugster-cli)
-![build status](https://img.shields.io/github/workflow/status/Bugsterapp/bugster-cli/CI)
+![release version](https://img.shields.io/github/v/release/Bugsterapp/bugster-cli?color=green)
 
 🐛 **Bugster Agent - Simple Browser testing**
 

